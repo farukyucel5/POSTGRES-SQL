@@ -13,11 +13,13 @@ CREATE TABLE ogrenciler2 (
 
 INSERT INTO ogrenciler2 VALUES ('1234567','Ali','Yilmaz',80,now())
 
+
 INSERT INTO ogrenciler2 VALUES ('2345678','Ali','Veli',90,now())
 
 INSERT INTO ogrenciler2 VALUES ('2345679',' ','Ece',50,now()) -- boşluk NULL değildir
 
 INSERT INTO ogrenciler2 (isim,soyisim) VALUES ('Bilal','Ece')
+
 INSERT INTO ogrenciler2 (isim,soyisim) VALUES ('John','Steve')
 
 --not: NULL larin hepsi UNIQUE kabul edilir. 
@@ -59,9 +61,10 @@ CONSTRAINT ogr_no_pk PRIMARY KEY(ogrenci_no)
 --NOT: 2.metotta PK için,istediğimiz özel ismi (custom) verebiliriz
 
 SELECT * 
-FROM ogrenciler4
+FROM ogrenciler4 
 
 INSERT INTO ogrenciler4 VALUES ('1234567','Ali','Yilmaz',80,now())
+
 INSERT INTO ogrenciler4 (isim,soyisim) VALUES ('John','Steve')--hatalı giriş:Primary KEY olan ogrenci_no hücresini boş geçemeyiz
 
 /*
@@ -104,15 +107,43 @@ FOREIGN KEY(sirket) REFERENCES sirketler(sirket)
 CREATE TABLE person(
 id INTEGER,
 name varchar(50),
-salary REAL CHECK(salary>5000), --5000 den fazla giriş olmalı
+salary REAL PRIMARY KEY CHECK(salary>5000), --5000 den fazla giriş olmalı
 age INTEGER CHECK(age>=0)  -- negatif değer olmayacak
 );
 
 SELECT * FROM person p 
 
 INSERT INTO person VALUES (11,'Ali Can',6000,35)
+
+INSERT INTO person VALUES (12,'Faruk Yücel',53000,30)
+
 INSERT INTO person VALUES (12,'Rusen Ece',5500,-3) --Hatalı giriş: Age degeri şartı sağlamıyor
+
 INSERT INTO person VALUES (13,'Ali Can',4000,45) -- Hatalı giriş: Salary şartı sağlanmıyor (>5000)
+
+
+CREATE TABLE salaryType(
+ salary REAL,
+ sType varchar(50),
+ FOREIGN KEY(salary) REFERENCES person(salary)
+
+)
+
+INSERT INTO salarytype VALUES (53000,'medium')
+
+INSERT INTO salarytype VALUES (6000,'junior')
+
+
+SELECT p.id, p.name, p.salary, p.age, s.sType
+FROM person p
+JOIN salaryType s ON p.salary = s.salary
+WHERE s.sType = 'junior';
+
+
+
+
+
+
 
 
 
